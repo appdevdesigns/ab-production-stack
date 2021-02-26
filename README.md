@@ -28,48 +28,48 @@ Base files for setting up an instance of the AppBuilder docker production stack
 
 1. **./config/local.js**
 
-  This is roughly in the JSON format. You may recognize it as the main config
-  file used by Sails. However, other components of the AppBuilder stack will
-  also be using this one. The main settings you will typically want to change 
-  are:
-    
+    This is roughly in the JSON format. You may recognize it as the main config
+    file used by Sails. However, other components of the AppBuilder stack will
+    also be using this one. The main settings you will typically want to change 
+    are:
+  
     * **connections.appdev_default.password**
     
-        This is the root password to your stack's MariaDB database. This will 
-        automatically be adjusted to have the same value as the `./mysql/password` 
-        file below. There is no need to change any setting in this section.
+      This is the root password to your stack's MariaDB database. This will 
+      automatically be adjusted to have the same value as the `./mysql/password` 
+      file below. There is no need to change any setting in this section.
     
     * **connections.appBuilder**
     
-        No need to change this.
+      No need to change this.
     
     * **nodemailer.smtp.host**
     
-        This is the domain name for your outgoing mail server. AppBuilder will use 
-        this when sending out notification emails.
+      This is the domain name for your outgoing mail server. AppBuilder will use 
+      this when sending out notification emails.
     
     * **appbuilder.baseURL**
     
-        The external URL that users will use to access this AppBuilder site.
+      The external URL that users will use to access this AppBuilder site.
     
     * **appbuilder.mcc**
     
-        The public facing secure relay server that this AppBuilder instance 
-        will connect with. You can safely leave this disabled.
+      The public facing secure relay server that this AppBuilder instance 
+      will connect with. You can safely leave this disabled.
 
 2. **./mysql/password**
 
-  This is a plaintext file. Its value should match what you have entered in
-  the `appdev_default.password` setting from `./config/local.js`.
+    This is a plaintext file. Its value will be used to fill
+    the `appdev_default.password` setting from `./config/local.js`.
     
-  Important note: When you start up the MariaDB container in this AppBuilder 
-  stack for the first time, it will set the database root password to the
-  value you have specified in this password file. After that first time, 
-  changing this value will not affect the already established password.
+    Important note: When you start up the MariaDB container in this AppBuilder 
+    stack for the first time, it will set the database root password to the
+    value you have specified in this password file. After that first time, 
+    changing this value will not affect the already established password.
     
-  If your database is already set up, this password file must still be
-  entered correctly. It will automatically be replicated into the 
-  `./config/local.js` file.
+    If your database is already set up, this password file must still be
+    entered correctly as it will automatically be replicated into the 
+    `./config/local.js` file.
 
 
 ### Data
