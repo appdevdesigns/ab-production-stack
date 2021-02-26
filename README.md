@@ -28,8 +28,8 @@ Base files for setting up an instance of the AppBuilder docker production stack
 
     This is roughly in the JSON format. You may recognize it as the main config
     file used by Sails. However, other components of the AppBuilder stack will
-    also be using this one. The main settings you will typically want to change 
-    are:
+    also be referncing this one. The main settings you will typically want to 
+    change are:
   
     * **connections.appdev_default.password**
     
@@ -58,12 +58,13 @@ Base files for setting up an instance of the AppBuilder docker production stack
 2. **./mysql/password**
 
     This is a plaintext file. Its value will be used to fill
-    the `appdev_default.password` setting from `./config/local.js`.
+    the `appdev_default.password` setting from `./config/local.js`. **This
+    will be your root DB password.** Choose something secure.
     
-    Important note: When you start up the MariaDB container in this AppBuilder 
-    stack for the first time, it will set the database root password to the
-    value you have specified in this password file. After that first time, 
-    changing this value will not affect the already established password.
+    Important note: When the MariaDB container starts up for the first 
+    time, it will set the database root password to the value you have 
+    specified in this password file. After that first time, changing 
+    this value will not affect the already established password.
     
     If your database is already set up, this password file must still be
     entered correctly as it will automatically be replicated into the 
@@ -102,8 +103,8 @@ Base files for setting up an instance of the AppBuilder docker production stack
   and other settings. Then, run `$ docker swarm init` to enable the Docker 
   stack feature.
     
-  In order to issue Docker commands, your account must either have root access,
-  or be part of the *docker* group.
+  In order to issue Docker commands, your user account must either have root 
+  access, or be part of the *docker* group.
 
 ## Start AppBuilder
 
