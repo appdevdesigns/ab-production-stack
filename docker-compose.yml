@@ -1,0 +1,114 @@
+version: "3.2"
+services:
+
+  #db: use Maria DB as our backend DB
+  db:
+    image: mariadb
+    ports:
+      - "3382:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /secret/password
+    volumes:
+      - type: bind
+        source: ./mysql/conf.d/my-noencrypt.cnf
+        target: /etc/mysql/conf.d/my.cnf
+      - type: bind
+        source: ./mysql/init
+        target: /docker-entrypoint-initdb.d
+      - type: bind
+        source: ./mysql/data
+        target: /var/lib/mysql
+      # - type: bind
+      #   source: ./mysql/conf.d
+      #   target: /etc/mysql/conf.d
+      - type: bind
+        source: ./mysql/key
+        target: /key
+      - type: bind
+        source: ./mysql/password
+        target: /secret/password
+    # when there is a problem with : Error: ER_CRASHED_ON_USAGE: Table 'AAAAAA' is marked as crashed and should be repaired
+    # this can happen with the alter table algorithm: try the safest(and slowest) COPY
+    # command: ["mysqld", "--alter-algorithm=copy"]
+    # on windows: use this command. (be sure to clear out mysql/data folder)
+    # command: mysqld --innodb-flush-method=littlesync --innodb-use-native-aio=OFF --log_bin=ON
+  #/db
+  
+  api_sails:
+    image: digiserve/ab-sails-api
+    depends_on: 
+      - mariadb
+      - redis
+    deploy:
+      replicas: 1
+      restart_policy: 
+        condition: on-failure
+    ports:
+     - "15002:1337"
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+    volumes:
+    #  - type: bind
+    #    source: ./config/local.js
+    #    target: /app/config/local.js
+      - type: bind
+        source: ./mysql/password
+        target: /secret/password
+      - type: bind
+        source: ./data
+        target: /app/data
+  #/api_sails
+
+  #redis: use redis to allow cote services to find each other across this stack
+  redis:
+    image: redis
+    #ports:
+    #  - 6379:6379
+    volumes:
+      - type: bind
+        source: ./redis/data
+        target: /data
+    command: redis-server --appendonly yes
+  #/redis
+
+  #notification_email
+  notification_email:
+    image: node
+    # ports:
+      # - "9229:9229"
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+    volumes:
+      - type: bind
+        source: ./developer/notification_email
+        target: /app
+      - type: bind
+        source: ./config/local.js
+        target: /app/config/local.js
+    depends_on:
+      - redis
+    working_dir: /app
+    # command: [ "node", "--inspect-brk=0.0.0.0:9229", "app.js" ]
+    command: [ "node", "app.js" ]
+  #/notification_email
+
+  #process_manager: (AppBuilder) a micro service to manage our process tasks
+  process_manager:
+    image: node
+    # ports:
+    #   - "9229:9229"
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+    volumes:
+      - type: bind
+        source: ./developer/process_manager
+        target: /app
+      - type: bind
+        source: ./config/local.js
+        target: /app/config/local.js
+    depends_on:
+      - redis
+    working_dir: /app
+    # command: [ "node", "--inspect-brk=0.0.0.0:9229", "app.js" ]
+    command: [ "node", "app.js" ]
+  #/process_manager
