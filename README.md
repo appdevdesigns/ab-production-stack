@@ -1,26 +1,24 @@
-# ab-production-stack
 Base files for setting up an instance of the AppBuilder docker production stack
 
+# Instructions
 
-## Instructions
-
-### docker-compose.yml
+## docker-compose.yml
 
   Mainly, you will want to edit this to expose ports from the Docker containers
   to be accessible from the outside via your own external port number.
 
-#### **Required**
+### **Required**
   - api_sails:
     - ports:
         - "*[external port]*:1337"
 
-#### **Recommended**
+### **Optional, for debugging data**
   - db:
     - ports:
         - "*[external port]*:3306"
 
 
-### Config
+## Config
 
   There are two config files that the AppBuilder stack will rely on.
   Make sure to edit them with your own settings *before* starting up 
@@ -72,7 +70,7 @@ Base files for setting up an instance of the AppBuilder docker production stack
     `./config/local.js` file.
 
 
-### Data
+## Data
 
   * **./mysql/data**
 
@@ -96,9 +94,9 @@ Base files for setting up an instance of the AppBuilder docker production stack
     by users.
 
 
-## Usage
+# Usage
 
-### Preparation
+## Preparation
 
   Please follow the **Instructions** section on configuring your DB credentials
   and other settings. Then, run `$ docker swarm init` to enable the Docker 
@@ -107,7 +105,7 @@ Base files for setting up an instance of the AppBuilder docker production stack
   In order to issue Docker commands, your account must either have root access,
   or be part of the *docker* group.
 
-### Start AppBuilder
+## Start AppBuilder
 
 ```sh
 $ docker stack deploy -c docker-compose.yml [STACK_NAME]
@@ -115,13 +113,13 @@ $ docker stack deploy -c docker-compose.yml [STACK_NAME]
   Substitute your desired text for `[STACK_NAME]`. This is used to help
   differentiate it from any other stacks running on the same server.
 
-### Stop AppBuilder
+## Stop AppBuilder
 
 ```sh
 $ docker stack rm [STACK_NAME]
 ```
 
-### View console
+## View console
 
 ```sh
 $ docker service logs -f [STACK_NAME]_api_sails
