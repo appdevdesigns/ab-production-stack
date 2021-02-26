@@ -48,9 +48,9 @@ services:
     environment:
       - COTE_DISCOVERY_REDIS_HOST=redis
     volumes:
-    #  - type: bind
-    #    source: ./config/local.js
-    #    target: /app/config/local.js
+      - type: bind
+        source: ./config/local.js
+        target: /app/config/local.js
       - type: bind
         source: ./mysql/password
         target: /secret/password
