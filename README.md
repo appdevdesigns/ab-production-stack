@@ -1,18 +1,21 @@
-Base files for setting up an instance of the AppBuilder docker production stack
+This is for setting up an instance of the AppBuilder docker production stack on a server.
 
 # Instructions
 
 ## docker-compose.yml
 
-  Mainly, you will want to edit this to expose ports from the Docker containers
-  to be accessible from the outside via your own external port number.
+  You will want to edit this to expose ports from the Docker containers
+  to be accessible from the outside via your chosen external port numbers.
 
 ### **Required**
+  The main user facing component using regular unencrypted http. Typically, there will 
+  be an nginx of apache layer on the server that handles the SSL/TLS on top of this.
   - api_sails:
     - ports:
         - "*[external port]*:1337"
 
-### **Optional, for debugging data**
+### **Optional**
+  MariaDB. Expose it for debugging data or doing mysqldump backups.
   - db:
     - ports:
         - "*[external port]*:3306"
@@ -28,8 +31,8 @@ Base files for setting up an instance of the AppBuilder docker production stack
 
     This is roughly in the JSON format. You may recognize it as the main config
     file used by Sails. However, other components of the AppBuilder stack will
-    also be referncing this one. The main settings you will typically want to 
-    change are:
+    also be referencing this one. The main settings you will typically want to 
+    pay attention to are:
   
     * **connections.appdev_default.password**
     
@@ -71,7 +74,9 @@ Base files for setting up an instance of the AppBuilder docker production stack
     `./config/local.js` file.
 
 
-## Data
+# Data
+
+## Directories used for persistent storage
 
   * **./mysql/data**
 
@@ -91,8 +96,7 @@ Base files for setting up an instance of the AppBuilder docker production stack
 
   * **./data**
 
-    This is where the main AppBuilder Sails component will store any files uploaded
-    by users.
+    This is where AppBuilder will store any files uploaded by users.
 
 
 # Usage
@@ -101,7 +105,7 @@ Base files for setting up an instance of the AppBuilder docker production stack
 
   Please follow the **Instructions** section on configuring your DB credentials
   and other settings. Then, run `$ docker swarm init` to enable the Docker 
-  stack feature.
+  stack feature if needed.
     
   In order to issue Docker commands, your user account must either have root 
   access, or be part of the *docker* group.
