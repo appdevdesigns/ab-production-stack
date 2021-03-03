@@ -1,5 +1,10 @@
 This is for setting up an instance of the AppBuilder docker production stack on a server.
 
+# Installation
+
+You need git and Docker. Then clone this repo.
+
+
 # Instructions
 
 ## docker-compose.yml
@@ -9,16 +14,17 @@ This is for setting up an instance of the AppBuilder docker production stack on 
 
 ### **Required**
   The main user facing component using regular unencrypted http. Typically, there will 
-  be an nginx of apache layer on the server that handles the SSL/TLS on top of this.
+  be an nginx of apache layer on the host server that does the SSL/TLS on top of 
+  this.
   - api_sails:
     - ports:
-        - "*[external port]*:1337"
+        - "`[external port]`:1337"
 
 ### **Optional**
   MariaDB. Expose it for debugging data or doing mysqldump backups.
   - db:
     - ports:
-        - "*[external port]*:3306"
+        - "`[external port]`:3306"
 
 
 ## Config
@@ -34,26 +40,21 @@ This is for setting up an instance of the AppBuilder docker production stack on 
     also be referencing this one. The main settings you will typically want to 
     pay attention to are:
   
-    * **connections.appdev_default.password**
+    * `connections`
     
-      This is the root password to your stack's MariaDB database. This will 
-      automatically be adjusted to have the same value as the `./mysql/password` 
-      file below. There is no need to change any setting in this section.
+      There is no need to change any setting in this section. The database 
+      credentials will automatically be synced into here at runtime.
     
-    * **connections.appBuilder**
-    
-      No need to change this.
-    
-    * **nodemailer.smtp.host**
+    * `nodemailer.smtp.host`
     
       This is the domain name for your outgoing mail server. AppBuilder will use 
       this when sending out notification emails.
     
-    * **appbuilder.baseURL**
+    * `appbuilder.baseURL`
     
       The external URL that users will use to access this AppBuilder site.
     
-    * **appbuilder.mcc**
+    * `appbuilder.mcc`
     
       The public facing secure relay server that this AppBuilder instance 
       will connect with. You can safely leave this disabled.
@@ -61,7 +62,7 @@ This is for setting up an instance of the AppBuilder docker production stack on 
 2. **./mysql/password**
 
     This is a plaintext file. Its value will be used to fill
-    the `appdev_default.password` setting from `./config/local.js`. **This
+    the connections settings from `./config/local.js`. **This
     will be your root DB password.** Choose something secure.
     
     Important note: When the MariaDB container starts up for the first 
