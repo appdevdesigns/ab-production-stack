@@ -5,7 +5,9 @@ services:
   db:
     image: mariadb
     ports:
-      - "3382:3306"
+    # Sub in your desired port number
+    # Or comment this out to disable
+      - "_DB_EXTERNAL_PORT_:3306"
     environment:
       MYSQL_ROOT_PASSWORD_FILE: /secret/password
     volumes:
@@ -44,7 +46,9 @@ services:
       restart_policy: 
         condition: on-failure
     ports:
-     - "15002:1337"
+    # Sub in your desired port number
+    # This is unencrypted http
+     - "_SAILS_EXTERNAL_PORT_:1337"
     environment:
       - COTE_DISCOVERY_REDIS_HOST=redis
     volumes:
