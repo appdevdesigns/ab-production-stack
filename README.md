@@ -64,7 +64,13 @@ You need git and Docker. Then clone this repo.
     This is a plaintext file. Its value will be used to fill
     the connections settings from `./config/local.js`. **This
     will be your root DB password.** Choose something secure.
-    
+    Many text editors add a newline character to the end of the file by 
+    default. This may cause problems with the password file. There should
+    be an option to override that depending on your editor. For example:
+    ```sh
+      $ nano -L password
+    ```
+
     Important note: When the MariaDB container starts up for the first 
     time, it will set the database root password to the value you have 
     specified in this password file. After that first time, changing 
