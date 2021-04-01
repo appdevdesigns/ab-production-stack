@@ -1,7 +1,7 @@
 [mysqld]
 
 # Use MyISAM for internal tmp tables to prevent running out of disk space
-internal_tmp_disk_storage_engine = MYISAM
+#internal_tmp_disk_storage_engine = MYISAM
 
 # Max table size in bytes for tmp data storage
 # 10GB
