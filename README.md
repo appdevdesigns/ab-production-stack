@@ -5,6 +5,9 @@ This is for setting up an instance of the AppBuilder docker production stack on 
 You need git and Docker. Then clone this repo.
 
 
+<p>&nbsp;</p>
+
+
 # Instructions
 
 ## docker-compose.yml
@@ -81,6 +84,9 @@ You need git and Docker. Then clone this repo.
     `./config/local.js` file.
 
 
+<p>&nbsp;</p>
+
+
 # Data
 
 ## Directories used for persistent storage
@@ -104,6 +110,9 @@ You need git and Docker. Then clone this repo.
   * **./data**
 
     This is where AppBuilder will store any files uploaded by users.
+
+
+<p>&nbsp;</p>
 
 
 # Usage
