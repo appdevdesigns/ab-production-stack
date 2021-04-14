@@ -14,17 +14,21 @@ You need git and Docker. Then clone this repo.
 
 ### **Required**
   The main user facing component using regular unencrypted http. Typically, there will 
-  be an nginx of apache layer on the host server that does the SSL/TLS on top of 
+  be an nginx or apache layer on the host server that does the SSL/TLS on top of 
   this.
-  - api_sails:
-    - ports:
-        - "`[external port]`:1337"
+  ```yaml
+    api_sails:
+      ports:
+        - "[external port]:1337"
+  ```
 
 ### **Optional**
   MariaDB. Expose it for debugging data or doing mysqldump backups.
-  - db:
-    - ports:
-        - "`[external port]`:3306"
+  ```yaml
+    db:
+      ports:
+        - "[external port]:3306"
+  ```
 
 
 ## Config
@@ -45,15 +49,6 @@ You need git and Docker. Then clone this repo.
       There is no need to change any setting in this section. The database 
       credentials will automatically be synced into here at runtime.
     
-    * `nodemailer.smtp.host`
-    
-      This is the domain name for your outgoing mail server. AppBuilder will use 
-      this when sending out notification emails.
-    
-    * `appbuilder.baseURL`
-    
-      The external URL that users will use to access this AppBuilder site.
-    
     * `appbuilder.mcc`
     
       The public facing secure relay server that this AppBuilder instance 
@@ -62,9 +57,9 @@ You need git and Docker. Then clone this repo.
 2. **./mysql/password**
 
     This is a plaintext file. Its value will be used to fill
-    the connections settings from `./config/local.js`. **This
+    the connections section from `./config/local.js`. **This
     will be your root DB password.** Choose something secure.
-    
+
     Important note: When the MariaDB container starts up for the first 
     time, it will set the database root password to the value you have 
     specified in this password file. After that first time, changing 
@@ -72,7 +67,7 @@ You need git and Docker. Then clone this repo.
     
     If your database is already set up, this password file must still be
     entered correctly as it will automatically be replicated into the 
-    `./config/local.js` file.
+    `./config/local.js` file on every start up.
 
 
 # Data
