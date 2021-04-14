@@ -1,5 +1,6 @@
 module.exports = {
     "environment": process.env.NODE_ENV || 'production',
+
     "connections": {
         "appdev_default": {
             "host": "db",
@@ -9,13 +10,28 @@ module.exports = {
             "database": "site"
         },
         "appBuilder": {
-            "adapter": null,
-            "host": null,
-            "user": null,
-            "password": null,
             "database": "appbuilder"
         }
     },
+    "datastores": {
+        "appbuilder": {
+            "adapter": "sails-mysql",
+            "host": "db",
+            "port": 3306,
+            "user": "root",
+            "password": null,
+            "database": "appbuilder"
+        },
+        "site": {
+            "adapter": "sails-mysql",
+            "host": "db",
+            "port": 3306,
+            "user": "root",
+            "password": null,
+            "database": "site"
+        }
+    },
+
     "nodemailer": {
         "default": "smtp",
         "smtp": {
@@ -25,13 +41,19 @@ module.exports = {
             "port": 25
         }
     },
+    "notification_email": {
+        "enable": false,
+        "default": "smtp",
+        "smtp": {}
+    },
+
     "appbuilder": {
         "baseURL": "http://localhost:1337",
         "deeplink": null,
         "mcc": {
             "enabled": false,
             "url": "http://localhost:1337",
-            "accessToken": "There is no spoon.",
+            "accessToken": "",
             "pollFrequency": 5000,
             "maxPacketSize": 1048576
         },
@@ -43,5 +65,8 @@ module.exports = {
             "pass": ""
         }
     },
-    "crontab": {}
+    "crontab": {},
+    "process_manager": {
+        "enable": true
+    }
 }
