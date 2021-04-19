@@ -98,22 +98,16 @@ services:
   #/notification_email
 
   #process_manager: (AppBuilder) a micro service to manage our process tasks
-#  process_manager:
-#    image: node
-#    # ports:
-#    #   - "9229:9229"
-#    environment:
-#      - COTE_DISCOVERY_REDIS_HOST=redis
-#    volumes:
-#      - type: bind
-#        source: ./developer/process_manager
-#        target: /app
-#      - type: bind
-#        source: ./config/local.js
-#        target: /app/config/local.js
-#    depends_on:
-#      - redis
-#    working_dir: /app
-#    # command: [ "node", "--inspect-brk=0.0.0.0:9229", "app.js" ]
-#    command: [ "node", "app.js" ]
+  # See https://github.com/appdevdesigns/ab-process-manager
+  process_manager:
+    image: docker.io/digiserve/ab-process-manager:latest
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+    volumes:
+      - type: bind
+        source: ./config/local.js
+        target: /app/config/local.js
+    depends_on:
+      - redis
+      - api_sails
   #/process_manager
