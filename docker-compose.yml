@@ -40,7 +40,7 @@ services:
   api_sails:
     image: docker.io/digiserve/ab-sails-api:latest
     depends_on: 
-      - mariadb
+      - db
       - redis
     deploy:
       replicas: 1
@@ -77,28 +77,22 @@ services:
   #/redis
 
   #notification_email
-#  notification_email:
-#    image: node
-#    # ports:
-#      # - "9229:9229"
-#    environment:
-#      - COTE_DISCOVERY_REDIS_HOST=redis
-#    volumes:
-#      - type: bind
-#        source: ./developer/notification_email
-#        target: /app
-#      - type: bind
-#        source: ./config/local.js
-#        target: /app/config/local.js
-#    depends_on:
-#      - redis
-#    working_dir: /app
-#    # command: [ "node", "--inspect-brk=0.0.0.0:9229", "app.js" ]
-#    command: [ "node", "app.js" ]
+  # See https://github.com/appdevdesigns/ne-production-image
+  notification_email:
+    image: docker.io/digiserve/ab-notification-email
+    environment:
+      - COTE_DISCOVERY_REDIS_HOST=redis
+    volumes:
+      - type: bind
+        source: ./config/local.js
+        target: /app/config/local.js
+    depends_on:
+      - redis
+      - api_sails
   #/notification_email
 
   #process_manager: (AppBuilder) a micro service to manage our process tasks
-  # See https://github.com/appdevdesigns/ab-process-manager
+  # See https://github.com/appdevdesigns/pm-production-image
   process_manager:
     image: docker.io/digiserve/ab-process-manager:latest
     environment:
